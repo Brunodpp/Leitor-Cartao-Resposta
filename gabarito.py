@@ -22,35 +22,42 @@ imgCinza = cv2.cvtColor(imgW, cv2.COLOR_BGR2GRAY)
 imgThresh = cv2.adaptiveThreshold(imgCinza, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 16)
 imgBlur = cv2.medianBlur(imgThresh, 5)
 
-
+voltas=0
 rCorretas = 0
-gabarito = [random.randint(0, 4) for _ in range(20)]
-for j in range (1,21):
-    x, y, w, h = vaga1  
-    y+= (j-1)*18
-    if j> 11:
-        y+= 8
-    qtdMarcada =0
-    for i in range(1,6):
-        x=vaga1[0]
-        x+= (i-1)*17
+gabarito = [random.randint(0, 4) for _ in range(40)]
+for bb in range(1,3):
+    
+    for j in range (1,21):
+        x, y, w, h = vaga1 
         
-        recorte = imgBlur[y:y+h, x:x+w]
-        qtdPxBranco = cv2.countNonZero(recorte)
-        
-        #cv2.rectangle(imgW, (x, y), (x+w, y+h), (0, 0, 255), 2)
-        #cv2.putText(frame, str(qtdPxBranco), (x+(20*i), y+h-10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
+         
+        y+= (j-1)*18
+        if j> 11:
+            y+= 8
+            x+=4
+        qtdMarcada =0
+        for i in range(1,6):
+            x=vaga1[0]
+            if bb == 2:
+                        x+= 122
+            x+= (i-1)*17
+            
+            recorte = imgBlur[y:y+h, x:x+w]
+            qtdPxBranco = cv2.countNonZero(recorte)
+            
+            cv2.rectangle(imgW, (x, y), (x+w, y+h), (0, 0, 255), 2)
+            #cv2.putText(frame, str(qtdPxBranco), (x+(20*i), y+h-10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
 
-        if qtdPxBranco > 70:
-            if gabarito[j-1] == (i-1):
-                cv2.rectangle(imgW, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                rCorretas += 1
-            else:
-                cv2.rectangle(imgW, (x, y), (x + w, y + h), (0, 0, 255), 2)
-                cv2.rectangle(imgW, (vaga1[0]+(gabarito[j-1]*16), y), (vaga1[0]+(gabarito[j-1]*16) + w, y + h), (255, 0, 0), 2)
-            qtdMarcada += 1
+            if qtdPxBranco > 70:
+                if gabarito[(j if bb ==1 else j+20) -1] == (i-1):
+                    cv2.rectangle(imgW, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                    rCorretas += 1
+                else:
+                    cv2.rectangle(imgW, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                    cv2.rectangle(imgW, ((vaga1[0] if bb == 1 else vaga1[0] + 122) + (gabarito[(j if bb == 1 else j + 20) - 1] * 16), y), ((vaga1[0] if bb == 1 else vaga1[0] + 122) + (gabarito[(j if bb == 1 else j + 20) - 1] * 16) + w, y + h), (255, 0, 0), 2)
+                qtdMarcada += 1
 cv2.rectangle(imgW, (450, 0), (600, 40), (31, 125, 33), -1)
-cv2.putText(imgW, f"{rCorretas}/20", (450, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+cv2.putText(imgW, f"{rCorretas}/40", (450, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 print(gabarito)
 cv2.imshow("Imagem", imgCinza)
 cv2.imshow("Imagem Threshold", imgThresh)
