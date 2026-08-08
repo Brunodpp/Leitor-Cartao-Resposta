@@ -45,7 +45,7 @@ for bb in range(1,3):
             recorte = imgBlur[y:y+h, x:x+w]
             qtdPxBranco = cv2.countNonZero(recorte)
             
-            cv2.rectangle(imgW, (x, y), (x+w, y+h), (0, 0, 255), 2)
+            #cv2.rectangle(imgW, (x, y), (x+w, y+h), (0, 0, 255), 2)
             #cv2.putText(frame, str(qtdPxBranco), (x+(20*i), y+h-10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
 
             if qtdPxBranco > 70:
@@ -54,7 +54,7 @@ for bb in range(1,3):
                     rCorretas += 1
                 else:
                     cv2.rectangle(imgW, (x, y), (x + w, y + h), (0, 0, 255), 2)
-                    cv2.rectangle(imgW, ((vaga1[0] if bb == 1 else vaga1[0] + 122) + (gabarito[(j if bb == 1 else j + 20) - 1] * 16), y), ((vaga1[0] if bb == 1 else vaga1[0] + 122) + (gabarito[(j if bb == 1 else j + 20) - 1] * 16) + w, y + h), (255, 0, 0), 2)
+                    cv2.rectangle(imgW, ((vaga1[0] if bb == 1 else vaga1[0] + 122) + (gabarito[(j if bb == 1 else j + 20) - 1] * 17), y), ((vaga1[0] if bb == 1 else vaga1[0] + 122) + (gabarito[(j if bb == 1 else j + 20) - 1] * 17) + w, y + h), (255, 0, 0), 2)
                 qtdMarcada += 1
 cv2.rectangle(imgW, (450, 0), (600, 40), (31, 125, 33), -1)
 cv2.putText(imgW, f"{rCorretas}/40", (450, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
